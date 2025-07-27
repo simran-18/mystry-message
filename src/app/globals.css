@@ -1,26 +1,31 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.navbar
+{
+  @apply flex justify-between items-center bg-gray-800 text-white p-4 w-full space-x-10;
+}
+ul{
+  @apply flex justify-center w-full gap-20 px-10;
+}
+button {
+  @apply bg-black text-white font-bold py-2 px-4 rounded-md m-2;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+input {
+  @apply border border-gray-300 rounded-md p-2 m-2;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+h1 {
+  @apply text-2xl font-bold mt-4;
 }
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.main-container
+{
+  @apply text-center;
+}
+.container {
+  @apply text-center flex justify-center flex-col items-center h-screen w-screen m-auto;
+}
+.main-content {
+  @apply flex flex-col items-center justify-center h-fit w-fit bg-gray-100 p-10 rounded-2xl shadow-2xl ;
+}
+.toggle-btn{
+  @apply text-blue-800 font-semibold py-2 px-4 rounded-md m-2 cursor-pointer bg-white;
 }
