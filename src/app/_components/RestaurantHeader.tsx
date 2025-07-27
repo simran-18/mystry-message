@@ -1,8 +1,14 @@
-const RestaurantFooter = () => {
+import Link from "next/link";
+const RestaurantHeader = () => {
   return (
-    <div className="bg-gray-400 p-2 text-white text-sm font-semibold text-center">
-    All copyrights reserved &copy; 2025 
+    <div className="navbar">
+      <ul className="">
+        <li><Link href="/">Home</Link></li>
+        <li><Link href="/">Login/Signup</Link></li>
+        <li><Link href="/">Profile</Link></li>
+        <li></li>
+      </ul>
     </div>
   );
 }
-export default RestaurantFooter;
+export default RestaurantHeader;

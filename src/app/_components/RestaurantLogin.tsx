@@ -3,12 +3,12 @@ import React, { useState } from "react";
 
 const RestaurantLogin = () => {
   return (
-    <div className="container">
+    <div className="">
       <h1>Login</h1>
-    <div className="main-content">    
+    <div className="flex flex-col">    
         <input type="text" placeholder="Email email id" />
         <input type="password" placeholder="Enter password" />
-        <button>Login</button>
+        <button className="form-button">Login</button>
     </div>
     </div>
   );
