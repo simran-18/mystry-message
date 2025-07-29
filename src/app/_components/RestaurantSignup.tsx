@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const RestaurantSignup = () => {
@@ -10,6 +11,10 @@ const RestaurantSignup = () => {
   const [address, setAddress] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [loading,setLoading] = useState(false);
+  const router=useRouter();
+  const [error,setError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
   const handleSignup = async () => {
     // You can later add form validation and submission logic here
     console.log({
@@ -21,6 +26,14 @@ const RestaurantSignup = () => {
       address,
       contactNumber,
     });
+    if(!email || !password || !confirmPassword || !name || !city || !address || !contactNumber) {
+      setError(true);
+      return;
+    }
+    if(password !== confirmPassword) {
+      setPasswordError(true);
+      return;
+    }       
     try{
     setLoading(true);
     const result=await fetch("/api/restaurant", {
@@ -40,6 +53,15 @@ const RestaurantSignup = () => {
     if (result.ok) {
       const data = await result.json();
       console.log("Signup successful:", data);
+      if(data?.success)
+       {
+         const {restaurant}=data;
+         delete restaurant.password;
+         localStorage.setItem("restaurant", JSON.stringify(restaurant));
+         router.push("/restaurant/dashboard");
+       }
+      else
+        console.log("Signup failed! Please try again.");
     } else {
       const errorData = await result.json();
       console.error("Signup failed:", errorData);
@@ -63,6 +85,11 @@ if(loading) {
   return (
     <div className="w-full mx-auto">
       <h1 className="text-2xl font-bold mb-4 text-center">Restaurant Sign Up</h1>
+       {error && (
+          <div className="text-red-500">
+            Please fill all fields!
+          </div>
+        )}
       <div className="flex flex-col gap-3">
         <input
           type="text"
@@ -85,6 +112,11 @@ if(loading) {
           onChange={(e) => setConfirmPassword(e.target.value)}
           className="p-2 border rounded"
         />
+        {passwordError && (
+          <div className="text-red-500">
+            Passwords do not match!
+          </div>
+        )}
         <input
           type="text"
           placeholder="Enter restaurant name"
@@ -119,6 +151,7 @@ if(loading) {
         >
           Sign Up
         </button>
+       
       </div>
     </div>
   );
