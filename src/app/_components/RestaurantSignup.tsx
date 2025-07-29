@@ -5,26 +5,63 @@ const RestaurantSignup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [restaurantName, setRestaurantName] = useState("");
+  const [name, setName] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [contactNumber, setContactNumber] = useState("");
-
-  const handleSignup = () => {
+  const [loading,setLoading] = useState(false);
+  const handleSignup = async () => {
     // You can later add form validation and submission logic here
     console.log({
       email,
       password,
       confirmPassword,
-      restaurantName,
+      name,
       city,
       address,
       contactNumber,
     });
+    try{
+    setLoading(true);
+    const result=await fetch("/api/restaurant", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        name,
+        city,
+        address,
+        contactNumber,
+      }),
+    });
+    if (result.ok) {
+      const data = await result.json();
+      console.log("Signup successful:", data);
+    } else {
+      const errorData = await result.json();
+      console.error("Signup failed:", errorData);
+    }
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setName("");
+    setCity("");
+    setAddress("");
+    setContactNumber("");
+  } catch (error) {
+    console.error("Error during signup:", error); 
+  }finally{
+    setLoading(false);  
+  }
   };
-
+if(loading) {
+    return <div className="text-center">Loading...</div>;
+  }
   return (
-    <div className="w-full max-w-md mx-auto bg-white p-6 rounded shadow-md ">
+    <div className="w-full mx-auto">
       <h1 className="text-2xl font-bold mb-4 text-center">Restaurant Sign Up</h1>
       <div className="flex flex-col gap-3">
         <input
@@ -51,8 +88,8 @@ const RestaurantSignup = () => {
         <input
           type="text"
           placeholder="Enter restaurant name"
-          value={restaurantName}
-          onChange={(e) => setRestaurantName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className="p-2 border rounded"
         />
         <input
